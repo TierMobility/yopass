@@ -43,6 +43,8 @@ cd deploy/aws-lambda && ./deploy.sh
 
 ### Docker
 
+Build local image
+    docker build -t tier_yopass .
 Start memcached to store secrets in memory
 
     docker run --name memcached_yopass -d memcached
@@ -50,11 +52,11 @@ Start memcached to store secrets in memory
 TLS encryption
 
     docker run -p 1337:1337 -v /local/certs/:/certs \
-        --link memcached_yopass:memcache -d jhaals/yopass -memcached=memcache:11211 -tls.key=/certs/tls.key -tls.cert=/certs/tls.crt
+        --link memcached_yopass:memcache -d tier_yopass -memcached=memcache:11211 -tls.key=/certs/tls.key -tls.cert=/certs/tls.crt
 
 Plain(make sure this is restricted to localhost)
 
-    docker run -p 1337:1337 --link memcached_yopass:memcache -d jhaals/yopass -memcached=memcache:11211
+    docker run -p 1337:1337 --link memcached_yopass:memcache -d tier_yopass -memcached=memcache:11211
 
 ### Kubernetes
 
