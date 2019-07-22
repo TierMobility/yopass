@@ -23,6 +23,12 @@ const Create = () => {
     ? `${process.env.REACT_APP_BACKEND_URL}/secret`
     : '/secret';
 
+  const fileReader = new FileReader();
+  fileReader.onload = async () => {
+    setSecret(`${fileReader.result}`);
+    await submit();
+  };
+
   const submit = async () => {
     if (secret === '') {
       return;
@@ -69,6 +75,15 @@ const Create = () => {
               placeholder="Message to encrypt locally in your browser"
               onChange={e => setSecret(e.target.value)}
               value={secret}
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label>File</Label>
+            <Input
+                type="file"
+                name="secretFile"
+                placeholder="File to encrypt locally in your browser"
+                onChange={e => e.target.files && fileReader.readAsText(e.target.files[0])}
             />
           </FormGroup>
           <FormGroup tag="fieldset">
